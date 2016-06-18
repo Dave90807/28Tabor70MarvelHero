@@ -26,5 +26,10 @@ namespace _28Tabor70MarvelHero
         {
             this.InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var data = MarvelFacade.GetCharacterList();
+        }
     }
 }

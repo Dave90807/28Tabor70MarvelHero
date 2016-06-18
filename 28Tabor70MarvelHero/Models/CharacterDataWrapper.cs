@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace _28Tabor70MarvelHero.Models
 {
-    class CharacterDataWrapper
+    public class CharacterDataWrapper
     {
         public class Thumbnail
         {
