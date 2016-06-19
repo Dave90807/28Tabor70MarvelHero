@@ -1,6 +1,7 @@
 ﻿using _28Tabor70MarvelHero.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -11,6 +12,7 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
 
+
 namespace _28Tabor70MarvelHero
 {
     public class MarvelFacade
@@ -18,8 +20,41 @@ namespace _28Tabor70MarvelHero
         private const string PrivateKey = "f7a4b4dd7ef782466f9f97e186b520dcbda8e29c";
         private const string PublicKey = "2aa01b9d67aeb7ee57df7572c0bcf5ba";
         private const int MaxCharacters = 1500;
+        private const string ImageNotAvailablePath = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
 
-        public static async Task<CharacterDataWrapper> GetCharacterList()
+        public static async Task PopulateMarvelCharactersAsync(ObservableCollection<Character> marvelCharacters)
+        {
+            try
+            {
+            var characterDataWrapper = await GetCharacterDataWrapperAsync();
+            var characters = characterDataWrapper.data.results;
+            foreach (var character in characters)
+                {
+                    // Filter characters that are missing thumbnail images
+
+                    if (character.thumbnail != null
+                            && character.thumbnail.path != ""
+                            && character.thumbnail.path != ImageNotAvailablePath)
+                    {
+                        character.thumbnail.small = String.Format("{0}/standard_small.{1}",
+                            character.thumbnail.path,
+                            character.thumbnail.extension);
+
+                        character.thumbnail.large = String.Format("{0}/portrait_xlarge.{1}",
+                            character.thumbnail.path,
+                            character.thumbnail.extension);
+
+                        marvelCharacters.Add(character);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
+        private static async Task<CharacterDataWrapper> GetCharacterDataWrapperAsync()
         {
             // Assemble the URL
             Random random = new Random();

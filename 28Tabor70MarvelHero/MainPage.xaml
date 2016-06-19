@@ -5,9 +5,76 @@
     xmlns:local="using:_28Tabor70MarvelHero"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:_28Tabor70MarvelHero.Models"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Click="Button_Click" Content="Click-Me!" FontSize="20" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ListView Name="MasterListView" ItemsSource="{x:Bind MarvelCharacters}"
+                  IsItemClickEnabled="True"
+                  ItemClick="MasterListView_ItemClick">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:Character">
+                    <StackPanel Orientation="Horizontal" Margin="10,5,0,5">
+                        <Ellipse Width="45" Height="45">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{x:Bind thumbnail.small}" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Text="{x:Bind name}"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   FontSize="18"/>
+                    </StackPanel>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Grid Name="DetailGrid" Grid.Column="1" Grid.Row="0" Margin="10,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Name="DetailImage" Grid.Column="0" 
+                       Grid.RowSpan="2"
+                       VerticalAlignment="Top"/>
+                <TextBlock Name="DetailNameTextBlock" Grid.Column="1" 
+                           FontSize="32" Margin="10,0,0,0" />
+                <TextBlock Name="DetailDescriptionTextBlock" Grid.Row="1"
+                           Grid.Column="1" TextWrapping="Wrap"
+                           Margin="10,0,0,0"/>
+            </Grid>
+        </Grid>
+        <TextBlock Text="Data provided by Marvel. © 2015 Marvel" VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"
+                   Grid.Column="2" Grid.Row="2"/>
+
+        <ProgressRing Name="MyProgressRing"
+                      Width="100" Height="100"
+                      Foreground="Gray"
+                      Grid.ColumnSpan="2"
+                      Grid.RowSpan="3"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center" />
     </Grid>
 </Page>
