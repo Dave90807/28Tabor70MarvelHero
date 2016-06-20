@@ -38,16 +38,14 @@ namespace _28Tabor70MarvelHero
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            MyProgressRing.IsActive = true;
-            MyProgressRing.Visibility = Visibility.Visible;
-            while (MarvelCharacters.Count < 10)
-            {
-                Task  t =  MarvelFacade.PopulateMarvelCharactersAsync(MarvelCharacters);
-                await t;
-            }
+            // Loads the voice recognition dictionary
+            var storageFile =
+             await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(
+               new Uri("ms-appx:///VoiceCommandDictionary.xml"));
+            await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager
+                .InstallCommandDefinitionsFromStorageFileAsync(storageFile);
 
-            MyProgressRing.IsActive = false;
-            MyProgressRing.Visibility = Visibility.Collapsed;
+            Refresh();
             
         }
 
@@ -101,6 +99,23 @@ namespace _28Tabor70MarvelHero
             largeImage.UriSource = uri;
             // Set the source of the Image Control to the Bitmap Image
             ComicDetailImage.Source = largeImage;
+        }
+
+        public async void Refresh()
+        {
+            MyProgressRing.IsActive = true;
+            MyProgressRing.Visibility = Visibility.Visible;
+
+            MarvelCharacters.Clear();
+            while (MarvelCharacters.Count < 10)
+            {
+                Task t = MarvelFacade.PopulateMarvelCharactersAsync(MarvelCharacters);
+                await t;
+            }
+
+            MyProgressRing.IsActive = false;
+            MyProgressRing.Visibility = Visibility.Collapsed;
+
         }
     }
 }
