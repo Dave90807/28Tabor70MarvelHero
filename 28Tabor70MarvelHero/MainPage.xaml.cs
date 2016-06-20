@@ -56,6 +56,10 @@ namespace _28Tabor70MarvelHero
             MyProgressRing.IsActive = true;
             MyProgressRing.Visibility = Visibility.Visible;
 
+            ComicDetailNameTextBlock.Text = "";
+            ComicDetailDescriptionTextBlock.Text = "";
+            ComicDetailImage.Source = null;
+
             var selectedCharacter = (Character)e.ClickedItem;
 
             DetailNameTextBlock.Text = selectedCharacter.name;
@@ -81,9 +85,22 @@ namespace _28Tabor70MarvelHero
 
         }
 
-        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ComicsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            var selectedComic = (ComicBook)e.ClickedItem;
 
+            ComicDetailNameTextBlock.Text = selectedComic.title;
+
+            if (selectedComic.description != null)
+                ComicDetailDescriptionTextBlock.Text = selectedComic.description;
+
+            var largeImage = new BitmapImage(); // Create a Bitmap Image
+            // Create a new Uri to hold the source of the image 
+            Uri uri = new Uri(selectedComic.thumbnail.large, UriKind.Absolute);
+            // Set the source of the Bitmap Image to the uri that specifies the "xLarge" image
+            largeImage.UriSource = uri;
+            // Set the source of the Image Control to the Bitmap Image
+            ComicDetailImage.Source = largeImage;
         }
     }
 }
