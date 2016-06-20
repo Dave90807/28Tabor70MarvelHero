@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="MarvelFacade.cs" />
     <Compile Include="Models\CharacterDataWrapper.cs" />
+    <Compile Include="Models\ComicDataWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
